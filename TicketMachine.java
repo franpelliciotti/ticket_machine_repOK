@@ -63,8 +63,13 @@ public class TicketMachine
      */
     public void insertMoney(int amount)
     {
-        assert amount >= price: "El monto debe coincidir o ser mayor al costo fijado.";
+        if(amount < price){
+            throw new IllegalArgumentException("El monto debe ser mayor o igual al costo fijado.");    
+        }
         balance += amount;
+        if (balance < amount){
+            throw new IllegalStateException("El balance debe ser mayor o igual al monto ingresado.");
+        }
         assert repOK(): "No se preserva el invariante de clase";
     }
 
@@ -103,7 +108,9 @@ public class TicketMachine
      */
     public int refundBalance()
     {
-        assert balance > 0: "El balance ya esta en cero.";
+        if(balance <= 0){
+            throw new IllegalStateException("El balance ya esta en cero.");
+        }
         int amountToRefund;
         amountToRefund = balance;
         balance = 0;
